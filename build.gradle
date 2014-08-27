@@ -1,0 +1,48 @@
+
+repositories {
+	mavenCentral()
+}
+
+apply plugin: 'eclipse'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group 	= "com.willydupreez.examples.hornetq"
+version = "0.0.1-SNAPSHOT"
+
+ext.jettyVersion	= "9.2.2.v20140723"
+ext.junitVersion	= "4.11"
+
+configurations.all {
+	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+compileJava {
+	sourceCompatibility=1.8
+	targetCompatibility=1.8
+}
+
+compileTestJava {
+	sourceCompatibility=1.8
+	targetCompatibility=1.8
+}
+
+dependencies {
+	testCompile("junit:junit:${junitVersion}")
+	
+	compile("org.eclipse.jetty:jetty-webapp:${jettyVersion}")
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = "2.0"
+}
